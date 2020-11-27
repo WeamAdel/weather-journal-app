@@ -1,0 +1,113 @@
+/* Variables */
+:root {
+  --main-900: #16093f;
+  --main-800: #190a47;
+  --yellow-900: rgb(242, 231, 74);
+  --yellow-800: rgba(242, 231, 74, 0.36);
+}
+
+/* Global */
+
+html,
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--main-900);
+  color: white;
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+}
+
+/* Typography */
+h1,
+h2,
+h3 {
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+h1 {
+  font-size: 44px;
+  margin: 0 0 60px;
+}
+
+/* Layout */
+nav {
+  font-size: 14px;
+  padding: 16px 0;
+}
+
+nav .logo {
+  margin-bottom: 0;
+}
+
+nav .logo i {
+  margin-right: 6px;
+  color: var(--yellow-900);
+}
+
+main {
+  padding: 60px 0;
+}
+/* Framework */
+.container {
+  padding: 0 20px;
+  margin: auto;
+}
+
+@media (min-width: 767px) {
+  .container {
+    padding: 0 60px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1000px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1300px;
+  }
+}
+
+/* Modules */
+
+.weather-form {
+  max-width: 400px;
+}
+
+.weather-form .input-group {
+  margin-bottom: 32px;
+}
+
+.weather-form label {
+  display: block;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.weather-form .input {
+  background-color: var(--main-800);
+  width: 100%;
+  height: 40px;
+  padding: 8px;
+  box-shadow: 0 3px 0.5rem rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  border: 1px solid transparent;
+  transition: all 0.3s ease-in-out;
+  color: wheat;
+}
+
+.weather-form textarea.input {
+  min-height: 300px;
+}
+
+.weather-form .input:focus {
+  outline: none;
+  border-color: var(--yellow-800);
+  box-shadow: 0 0 0.5rem var(--yellow-800);
+}
