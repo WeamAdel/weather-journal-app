@@ -60,7 +60,7 @@ function fetchWeatherData({ zipCode = 94040, countryCode = "us", ...rest }) {
 
 //Post data to the node server
 async function postDataToServer(data) {
-  fetch("add-weather", {
+  await fetch("add-weather", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -69,11 +69,10 @@ async function postDataToServer(data) {
     body: JSON.stringify(data),
   })
     .then((res) => {
-      console.log(res);
       return res.json();
     })
     .then((data) => {
-      console.log(data);
+      return updateUI(data);
     })
     .catch((error) => console.log(error));
 }

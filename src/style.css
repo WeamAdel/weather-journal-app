@@ -24,6 +24,10 @@ body {
   margin: 0;
 }
 
+p {
+  margin: 0;
+}
+
 /* Typography */
 h1,
 h2,
@@ -55,9 +59,16 @@ main {
   padding: 60px 0;
 }
 
-main > .container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+section {
+  margin: auto;
+}
+
+@media (min-width: 1000px) {
+  main > .container {
+    display: grid;
+    grid-gap: 60px;
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 /* Framework */
@@ -111,8 +122,9 @@ main > .container {
 
 /* Modules */
 
+/* Start Weather Form */
 .weather-form {
-  max-width: 400px;
+  max-width: 500px;
 }
 
 .weather-form .input-group {
@@ -147,3 +159,82 @@ main > .container {
   border-color: var(--yellow-200);
   box-shadow: 0 0 0.5rem var(--yellow-200);
 }
+/* End Weather Form */
+
+/* Start Weather History */
+.weather-history ul {
+  list-style: none;
+  padding: 0;
+}
+.weather-history li {
+  display: flex;
+  background-color: var(--yellow-900);
+  border-radius: 16px;
+  padding: 16px 32px;
+  align-items: center;
+  font-size: 14px;
+  min-height: 120px;
+  max-width: 500px;
+  margin: auto;
+}
+
+.weather-history .main-info {
+  width: 50%;
+  padding-right: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.weather-history .main-info .temp {
+  font-size: 44px;
+  color: var(--main-900);
+}
+
+.weather-history .main-info i {
+  color: var(--yellow-700);
+  font-size: 44px;
+  margin-right: 12px;
+}
+
+.weather-history .main-info .description,
+.weather-history .extra-info .min-max {
+  color: var(--yellow-600);
+}
+
+.weather-history .extra-info {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  /* Card height - padding */
+  height: calc(120px - 32px);
+}
+
+.weather-history .extra-info::after {
+  content: "";
+  position: absolute;
+  left: -16px;
+  top: 0;
+  bottom: 0;
+  background-color: var(--yellow-700);
+  width: 1px;
+}
+
+.weather-history .extra-info h3 {
+  color: var(--yellow-600);
+  font-size: 14px;
+  font-family: "Roboto";
+  font-weight: 400;
+  margin: 0 0 4px;
+}
+
+.weather-history .extra-info time {
+  color: var(--yellow-700);
+  font-size: 12px;
+}
+
+.weather-history .extra-info .min-max {
+  margin-top: auto;
+}
+
+/* End Weather History */
