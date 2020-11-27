@@ -21,26 +21,40 @@
 
     <main>
       <div class="container">
+        <!-- Start Weather Form -->
         <section class="weather-form">
           <h1>Today's Weather</h1>
-          <form>
-            <!-- Country Name -->
+          <form id="weather-form">
+            <!-- Country Code -->
             <div class="input-group">
-              <label for="country-name">Country Name</label>
-              <input id="country-name" class="input" name="countryName" type="text" required>
+              <label for="country-name">Country Code</label>
+              <input value="us" id="country-code" class="input" name="countryCode" type="text" required>
             </div>
             <!-- Zip code -->
             <div class="input-group">
-              <label for="code">Zip Code</label>
-              <input id="code" class="input" name="code" type="text" required>
+              <label for="zip-code">Zip Code</label>
+              <input value="94040" id="zip-code" class="input" name="zip-code" type="text" required>
             </div>
             <!-- Zip code -->
             <div class="input-group">
-              <label for="code">How are you feeling today?</label>
-              <textarea id="code" class="input" name="code" required></textarea>
+              <label for="feeling">How are you feeling today?</label>
+              <textarea value="Great Acually" id="feeling" class="input" name="feeling" required>Great Acually</textarea>
             </div>
+
+            <button type="submit" class="secondary-btn">Save</button>
+            <div class="clear-fix"></div>
           </form>
         </section>
+        <!-- End Weather Form -->
+
+        <!-- Start Weather History -->
+        <section class="weather-history">
+          <h2>Your History</h2>
+          <ul class="history-list" id="history-list">
+            
+          </ul>
+        </section>
+        <!-- End Weather History -->
       </div>
     </main>
 

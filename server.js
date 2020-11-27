@@ -23,8 +23,27 @@ function listening() {
 }
 
 // Setup empty JS object to act as endpoint for all routes
-projectData = {};
+const projectData = [];
 
-//API using https://openweathermap.org/
-const APIKey = "91944400789044254ef1db1e5cdcd17d";
-const APIEndPoint = `api.openweathermap.org/data/2.5/weather?q=`;
+//Post route to add new weather entry to the project data
+app.post("/add-weather", postWeatherData);
+
+function postWeatherData(req, res) {
+  const data = req.body;
+  console.log(data);
+  const newEntry = {
+    zipCode: data.zipCode,
+    countryCode: data.countryCode,
+    feeling: data.feeling,
+    date: data.date,
+    weather: data.weather,
+  };
+
+  projectData.push(newEntry);
+
+  console.log(projectData);
+
+  return res.send(JSON.stringify(newEntry));
+}
+
+//GET weather reading
