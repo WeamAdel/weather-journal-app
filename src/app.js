@@ -141,7 +141,7 @@ async function updateUI({ entry, isNew = true }) {
   removeEmptyHistoryIndicator();
 
   //Add the new card to the history list
-  historyList.innerHTML = weatherCardElem + historyList.innerHTML;
+  historyList.prepend(weatherCardElem);
 
   //If the card is newly added and not loaded from the node server
   if (isNew) {
@@ -154,46 +154,6 @@ async function updateUI({ entry, isNew = true }) {
 
   //Change submit button status to NOT disabled
   setSubmitBtnStatus(false);
-}
-
-//Create a card markup template
-//Takes 0.83s to update the UI
-//Better performance than creating each element individually using "document.createElement()"
-//The second method is commented bellow in case it's required to use it
-
-function createWeatherCardElem({
-  id,
-  countryCode,
-  city,
-  feelings,
-  date,
-  weather,
-  isNew,
-}) {
-  const template = `<li class="${isNew ? "new" : ""}" id="history-card-${id}">
-    <div class="info-wrapper"> 
-      <div class="main-info">
-        <i class="fas fa-cloud-rain"></i>
-        <div class="wrapper">
-          <p class="temp">
-            <span>${weather.temp}<sup>°</sup></span>
-          </p>
-          <p class="description">${weather.description}</p>
-        </div>
-      </div>
-      <div class="extra-info">
-        <h3 class="country">${city}, ${countryCode.toUpperCase()}</h3>
-        <time datetime="${date}">${date}</time>
-        <p class="min-max">
-          <span>min: ${weather.minTemp}<sup>°</sup></span> / 
-          <span>max: ${weather.maxTemp}<sup>°</sup></span></p>
-      </div>
-    </div>
-    <button class="feelings-btn" data-card="${id}">😊</button>
-    <p class="feelings">${feelings}</p>
-  </li>`;
-
-  return template;
 }
 
 //New added card is highlited in yellow for 1s then it takes the normal styles
@@ -231,87 +191,94 @@ function toggleFeelingsVisibility(e) {
   }
 }
 
-// Takes 1.55s on my machine to update the UI
-// function createWeatherCardElem({
-//   id,
-//   countryCode,
-//   city,
-//   feelings,
-//   date,
-//   weather,
-//   isNew,
-// }) {
-//   //creating elements
-//   const li = document.createElement("li");
-//   const infoWrapper = document.createElement("div");
-//   const mainInfo = document.createElement("div");
-//   const cardIcon = document.createElement("i");
-//   const mainInfoWrapper = document.createElement("div");
-//   const temprature = document.createElement("p");
-//   const degree = document.createElement("span");
-//   const degreeSympol = document.createElement("sup");
-//   const description = document.createElement("p");
-//   const extraInfo = document.createElement("div");
-//   const country = document.createElement("h3");
-//   const time = document.createElement("time");
-//   const minMaxTemp = document.createElement("p");
-//   const minTemp = document.createElement("span");
-//   const maxTemp = document.createElement("span");
-//   const toggleFeelingsBtn = document.createElement("button");
-//   const feelingsElem = document.createElement("feelings");
+//Create a card markup template
+function createWeatherCardElem({
+  id,
+  countryCode,
+  city,
+  feelings,
+  date,
+  weather,
+  isNew,
+}) {
+  //creating elements
+  //Main info
+  const li = document.createElement("li");
+  const infoWrapper = document.createElement("div");
+  const mainInfo = document.createElement("div");
+  const cardIcon = document.createElement("i");
+  const mainInfoWrapper = document.createElement("div");
+  const temprature = document.createElement("p");
+  const degree = document.createElement("span");
+  const degreeSympol = document.createElement("sup");
+  const description = document.createElement("p");
+  //Extra info
+  const extraInfo = document.createElement("div");
+  const country = document.createElement("h3");
+  const time = document.createElement("time");
+  const minMaxTemp = document.createElement("p");
+  const minTemp = document.createElement("span");
+  const maxTemp = document.createElement("span");
+  //Feelings
+  const toggleFeelingsBtn = document.createElement("button");
+  const feelingsElem = document.createElement("feelings");
 
-//   // Assigning attributes
-//   //Main info
-//   isNew ? li.setAttribute("class", "new") : null;
-//   li.setAttribute("id", "history-card-" + id);
-//   infoWrapper.setAttribute("class", "info-wrapper");
-//   mainInfo.setAttribute("class", "main-info");
-//   cardIcon.setAttribute("class", "fas fa-cloud-rain");
-//   mainInfoWrapper.setAttribute("class", "wrapper");
-//   temprature.setAttribute("class", "temp");
-//   description.setAttribute("class", "description");
-//   //Extra info
-//   extraInfo.setAttribute("class", "extra-info");
-//   country.setAttribute("class", "country");
-//   time.setAttribute("datetime", date);
-//   minMaxTemp.setAttribute("class", "min-max");
-//   //feelings
-//   toggleFeelingsBtn.setAttribute("class", "feelings-btn");
-//   toggleFeelingsBtn.setAttribute("data-card", id);
-//   feelingsElem.setAttribute("class", "feelings");
+  // Assigning attributes
+  //Main info
+  isNew ? li.setAttribute("class", "new") : null;
+  li.setAttribute("id", "history-card-" + id);
+  infoWrapper.setAttribute("class", "info-wrapper");
+  mainInfo.setAttribute("class", "main-info");
+  cardIcon.setAttribute("class", "fas fa-cloud-rain");
+  mainInfoWrapper.setAttribute("class", "wrapper");
+  temprature.setAttribute("class", "temp");
+  description.setAttribute("class", "description");
 
-//   //Set elements values
-//   //Main info
-//   degreeSympol.innerText = "°";
-//   degree.innerText = weather.temp;
-//   degree.appendChild(degreeSympol);
-//   temprature.innerHTML = degree;
-//   description.innerHTML = weather.description;
-//   mainInfoWrapper.appendChild(degree);
-//   mainInfoWrapper.appendChild(description);
-//   mainInfo.appendChild(cardIcon);
-//   mainInfo.appendChild(mainInfoWrapper);
+  //Extra info
+  extraInfo.setAttribute("class", "extra-info");
+  country.setAttribute("class", "country");
+  time.setAttribute("datetime", date);
+  minMaxTemp.setAttribute("class", "min-max");
 
-//   //Extra info
-//   country.innerText = city + ", " + countryCode.toUpperCase();
-//   time.innerText = date;
-//   minTemp.innerText = "min:" + weather.minTemp;
-//   maxTemp.innerText = "max:" + weather.maxTemp;
-//   minMaxTemp.appendChild(minMaxTemp);
-//   minMaxTemp.appendChild(maxTemp);
-//   extraInfo.append(country);
-//   extraInfo.append(time);
-//   extraInfo.append(minMaxTemp);
-//   //feelings
-//   toggleFeelingsBtn.innerText = "😊";
-//   feelingsElem.innerText = feelings;
+  //Feelings
+  toggleFeelingsBtn.setAttribute("class", "feelings-btn");
+  toggleFeelingsBtn.setAttribute("data-card", id);
+  feelingsElem.setAttribute("class", "feelings");
 
-//   infoWrapper.appendChild(mainInfo);
-//   infoWrapper.appendChild(extraInfo);
+  //Set elements values
+  //Main info
+  degreeSympol.innerText = "°";
+  degree.innerHTML = weather.temp;
+  degree.appendChild(degreeSympol);
+  temprature.appendChild(degree);
+  description.innerHTML = weather.description;
+  mainInfoWrapper.appendChild(temprature);
+  mainInfoWrapper.appendChild(description);
+  mainInfo.appendChild(cardIcon);
+  mainInfo.appendChild(mainInfoWrapper);
 
-//   li.appendChild(infoWrapper);
-//   li.appendChild(toggleFeelingsBtn);
-//   li.appendChild(feelingsElem);
+  //Extra info
+  country.innerText = city + ", " + countryCode.toUpperCase();
+  time.innerText = date;
+  minTemp.innerText = "min: " + weather.minTemp + " / ";
+  maxTemp.innerText = "max: " + weather.maxTemp;
+  minMaxTemp.appendChild(minMaxTemp);
+  minMaxTemp.appendChild(minTemp);
+  minMaxTemp.appendChild(maxTemp);
+  extraInfo.append(country);
+  extraInfo.append(time);
+  extraInfo.append(minMaxTemp);
 
-//   return li;
-// }
+  //Feelings
+  toggleFeelingsBtn.innerText = "😊";
+  feelingsElem.innerText = feelings;
+
+  infoWrapper.appendChild(mainInfo);
+  infoWrapper.appendChild(extraInfo);
+
+  li.appendChild(infoWrapper);
+  li.appendChild(toggleFeelingsBtn);
+  li.appendChild(feelingsElem);
+
+  return li;
+}

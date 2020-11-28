@@ -101,14 +101,13 @@ main {
   color: var(--yellow-900);
   padding: 12px;
   width: 180px;
-  float: right;
   height: 48px;
   font-size: 14px;
   background-color: transparent;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
   border-radius: 12px;
-  /* margin: auto; */
+  margin: 32px auto;
 }
 
 .secondary-btn:hover {
@@ -119,6 +118,12 @@ main {
 .secondary-btn:disabled {
   cursor: not-allowed;
   opacity: 0.5;
+}
+
+@media (min-width: 1000px) {
+  .secondary-btn {
+    float: right;
+  }
 }
 
 /* Errors */
@@ -167,6 +172,7 @@ h4 {
 /* Start Weather Form */
 .weather-form {
   max-width: 500px;
+  margin: auto;
 }
 
 .weather-form h1 {
@@ -245,7 +251,7 @@ h4 {
   min-height: 100px;
   max-width: 500px;
   border: 1px solid var(--yellow-900);
-  margin-bottom: 32px;
+  margin: 0 auto 32px;
   transition: all 0.3s ease-in-out;
 }
 

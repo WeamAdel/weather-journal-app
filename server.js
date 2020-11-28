@@ -7,7 +7,6 @@ const cors = require("cors");
 const app = express();
 
 /* Middleware*/
-//Here we are configuring express to use body-parser as middle-ware.
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
@@ -23,7 +22,7 @@ function listening() {
   console.log(`Your app is running on: http://localhost:${port}...`);
 }
 
-// Setup empty JS object to act as endpoint for all routes
+// Project data
 const projectData = [];
 
 //Get project data
@@ -52,5 +51,3 @@ function postWeatherData(req, res) {
 
   return res.send(JSON.stringify(newEntry));
 }
-
-//GET weather reading
