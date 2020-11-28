@@ -12,9 +12,9 @@ const historyList = document.getElementById("history-list");
       return { failed: true, code: res.status, message: res.statusText };
     })
     .then((data) => {
-      if (data.failed)
+      if (data.failed) {
         toggleErrorMessage({ code: data.code, message: data.message });
-      else {
+      } else {
         for (let entry of data) updateUI({ entry, isNew: false });
       }
     })
@@ -108,10 +108,18 @@ async function postDataToServer(data) {
     body: JSON.stringify(data),
   })
     .then((res) => {
-      return res.json();
+      //Request success
+      if (res.ok) return res.json();
+
+      //Request failed
+      return { failed: true, code: res.status, message: res.statusText };
     })
     .then((data) => {
-      return updateUI({ entry: data });
+      if (data.failed) {
+        toggleErrorMessage({ code: data.code, message: data.message });
+      } else {
+        return updateUI({ entry: data });
+      }
     })
     .catch((error) => console.log(error));
 }
