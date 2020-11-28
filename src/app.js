@@ -3,10 +3,20 @@ const historyList = document.getElementById("history-list");
 
 //Get project data on page load
 (async function getWeatherHistory() {
-  const weatherHistory = await fetch("/weather-history")
-    .then((res) => res.json())
+  fetch("/weather-history")
+    .then((res) => {
+      //Request success
+      if (res.ok) return res.json();
+
+      //Request failed
+      return { failed: true, code: res.status, message: res.statusText };
+    })
     .then((data) => {
-      for (let entry of data) updateUI({ entry, isNew: false });
+      if (data.failed)
+        toggleErrorMessage({ code: data.code, message: data.message });
+      else {
+        for (let entry of data) updateUI({ entry, isNew: false });
+      }
     })
     .catch((error) => console.log(error));
 })();
@@ -79,11 +89,6 @@ function fetchWeatherData({ zipCode = 94040, countryCode = "us", ...rest }) {
       } else {
         //show error message
         toggleErrorMessage({ code: data.cod, message: data.message });
-        //hide error message after 3s
-        setTimeout(
-          toggleErrorMessage.bind(this, { code: "", message: "" }),
-          3000
-        );
         setSubmitBtnStatus(false);
       }
     })
@@ -122,12 +127,13 @@ const errorMessage = document.getElementById("error-message");
 const errCode = errorMessage.querySelector("#error-message .code");
 const errMessage = errorMessage.querySelector("#error-message .messag-content");
 
-function toggleErrorMessage({ code = "", message = "" }) {
-  if (code) {
-    errorMessage.classList.add("visible");
-  } else {
+function toggleErrorMessage({ code, message }) {
+  errorMessage.classList.add("visible");
+
+  //hide error message after 3s
+  setTimeout(() => {
     errorMessage.classList.remove("visible");
-  }
+  }, 3000);
 
   errCode.innerText = code;
   errMessage.innerHTML = message;
