@@ -3,6 +3,7 @@
   --main-900: #16093f;
   --main-800: #190a47;
   --main-700: #120733;
+  --main-100: #8f83b4;
   --yellow-900: #f2e74a;
   --yellow-800: #dbd244;
   --yellow-700: #ccc43f;
@@ -37,7 +38,6 @@ h3 {
 
 h1 {
   font-size: 44px;
-  margin: 0 0 60px;
 }
 
 /* Layout */
@@ -169,6 +169,15 @@ h4 {
   max-width: 500px;
 }
 
+.weather-form h1 {
+  margin: 0 0 16px;
+}
+
+.weather-form h1 + p {
+  margin-bottom: 60px;
+  color: var(--main-100);
+}
+
 .weather-form .input-group {
   margin-bottom: 32px;
 }
@@ -250,14 +259,14 @@ h4 {
 }
 
 .weather-history .main-info {
-  width: 50%;
+  width: calc(50% + 16px);
   padding-right: 16px;
   display: flex;
   align-items: center;
 }
 
 .weather-history .main-info .temp {
-  font-size: 32px;
+  font-size: 30px;
   color: white;
 }
 

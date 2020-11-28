@@ -12,13 +12,12 @@ const historyList = document.getElementById("history-list");
 })();
 
 //Handle weather form submit
-const weatherForm = document.getElementById("weather-form");
 const countryCodeInput = document.getElementById("country-code");
 const zipCodeInput = document.getElementById("zip");
 const feelingsInput = document.getElementById("feelings");
 const submitBtn = document.getElementById("generate");
 
-weatherForm.addEventListener("submit", handleWeatherFormSubmit);
+submitBtn.addEventListener("click", handleWeatherFormSubmit);
 
 function handleWeatherFormSubmit(e) {
   e.preventDefault(); //prevent default form behaviour
@@ -59,10 +58,12 @@ function fetchWeatherData({ zipCode = 94040, countryCode = "us", ...rest }) {
     })
     .then((data) => {
       const failed = data.message ? true : false;
+
       if (!failed) {
         const newEntryData = {
           zipCode,
           countryCode,
+          city: data.name,
           feelings: rest.feelings,
           date: rest.date,
           weather: {
@@ -156,13 +157,14 @@ async function updateUI({ entry, isNew = true }) {
 }
 
 //Create a card markup template
-//Takes 0.155s to update the UI
+//Takes 0.83s to update the UI
 //Better performance than creating each element individually using "document.createElement()"
 //The second method is commented bellow in case it's required to use it
 
 function createWeatherCardElem({
   id,
   countryCode,
+  city,
   feelings,
   date,
   weather,
@@ -180,7 +182,7 @@ function createWeatherCardElem({
         </div>
       </div>
       <div class="extra-info">
-        <h3 class="country">${countryCode}</h3>
+        <h3 class="country">${city}, ${countryCode.toUpperCase()}</h3>
         <time datetime="${date}">${date}</time>
         <p class="min-max">
           <span>min: ${weather.minTemp}<sup>°</sup></span> / 
@@ -216,30 +218,32 @@ function removeEmptyHistoryIndicator() {
 
 //Toggle feelings visibility on emoji cick
 historyList.addEventListener("click", toggleFeelingsVisibility);
-console.log(historyList);
+
 function toggleFeelingsVisibility(e) {
   const target = e.target;
   if (target.classList.contains("feelings-btn")) {
     const cardId = target.dataset.card;
-    console.log(cardId);
     const targetFeelingsElem = document.querySelector(
       `#history-card-${cardId} .feelings`
     );
-    console.log(targetFeelingsElem);
+
     targetFeelingsElem.classList.toggle("visible");
   }
 }
 
-//Takes 1.15s to update the UI
+// Takes 1.55s on my machine to update the UI
 // function createWeatherCardElem({
-//  id,
+//   id,
 //   countryCode,
+//   city,
 //   feelings,
 //   date,
 //   weather,
+//   isNew,
 // }) {
 //   //creating elements
 //   const li = document.createElement("li");
+//   const infoWrapper = document.createElement("div");
 //   const mainInfo = document.createElement("div");
 //   const cardIcon = document.createElement("i");
 //   const mainInfoWrapper = document.createElement("div");
@@ -253,10 +257,14 @@ function toggleFeelingsVisibility(e) {
 //   const minMaxTemp = document.createElement("p");
 //   const minTemp = document.createElement("span");
 //   const maxTemp = document.createElement("span");
+//   const toggleFeelingsBtn = document.createElement("button");
+//   const feelingsElem = document.createElement("feelings");
 
 //   // Assigning attributes
 //   //Main info
-//   li.setAttribute("class", "new");
+//   isNew ? li.setAttribute("class", "new") : null;
+//   li.setAttribute("id", "history-card-" + id);
+//   infoWrapper.setAttribute("class", "info-wrapper");
 //   mainInfo.setAttribute("class", "main-info");
 //   cardIcon.setAttribute("class", "fas fa-cloud-rain");
 //   mainInfoWrapper.setAttribute("class", "wrapper");
@@ -267,6 +275,10 @@ function toggleFeelingsVisibility(e) {
 //   country.setAttribute("class", "country");
 //   time.setAttribute("datetime", date);
 //   minMaxTemp.setAttribute("class", "min-max");
+//   //feelings
+//   toggleFeelingsBtn.setAttribute("class", "feelings-btn");
+//   toggleFeelingsBtn.setAttribute("data-card", id);
+//   feelingsElem.setAttribute("class", "feelings");
 
 //   //Set elements values
 //   //Main info
@@ -281,7 +293,7 @@ function toggleFeelingsVisibility(e) {
 //   mainInfo.appendChild(mainInfoWrapper);
 
 //   //Extra info
-//   country.innerText = countryCode;
+//   country.innerText = city + ", " + countryCode.toUpperCase();
 //   time.innerText = date;
 //   minTemp.innerText = "min:" + weather.minTemp;
 //   maxTemp.innerText = "max:" + weather.maxTemp;
@@ -290,9 +302,16 @@ function toggleFeelingsVisibility(e) {
 //   extraInfo.append(country);
 //   extraInfo.append(time);
 //   extraInfo.append(minMaxTemp);
+//   //feelings
+//   toggleFeelingsBtn.innerText = "😊";
+//   feelingsElem.innerText = feelings;
 
-//   li.appendChild(mainInfo);
-//   li.appendChild(extraInfo);
+//   infoWrapper.appendChild(mainInfo);
+//   infoWrapper.appendChild(extraInfo);
+
+//   li.appendChild(infoWrapper);
+//   li.appendChild(toggleFeelingsBtn);
+//   li.appendChild(feelingsElem);
 
 //   return li;
 // }

@@ -24,21 +24,22 @@
         <!-- Start Weather Form -->
         <section class="weather-form">
           <h1>Today's Weather</h1>
+          <p>The form is initialized with default values of <em>Los Angeles, US</em>.</p>
           <form id="weather-form">
             <!-- Country Code -->
             <div class="input-group">
               <label for="country-name">Country Code</label>
-              <input value="us" id="country-code" class="input" name="countryCode" type="text" required>
+              <input value="us" id="country-code" class="input" name="countryCode" type="text" placeholder="Enter your country code, e.g. us, uk, eg..." required>
             </div>
             <!-- Zip code -->
             <div class="input-group">
               <label for="zip">Zip Code</label>
-              <input value="94040" id="zip" class="input" name="zip" type="text" required>
+              <input value="90001" id="zip" class="input" name="zip" type="text" placeholder="Enter your city zip code" required>
             </div>
             <!-- Zip code -->
             <div class="input-group">
               <label for="feelings">How are you feeling today?</label>
-              <textarea value="Great Acually" id="feelings" class="input" name="feelings" required>Great Acually</textarea>
+              <textarea value="Great Acually" id="feelings" class="input" name="feelings" placeholder="Enter how you feel today" required>Great Acually</textarea>
             </div>
 
             <button id="generate" type="submit" class="secondary-btn">Save</button>

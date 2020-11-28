@@ -20,7 +20,7 @@ const port = 3000;
 app.listen(port, listening);
 
 function listening() {
-  console.log(`Your app is running on: http://localhost:${port}`);
+  console.log(`Your app is running on: http://localhost:${port}...`);
 }
 
 // Setup empty JS object to act as endpoint for all routes
@@ -38,19 +38,17 @@ app.post("/add-weather", postWeatherData);
 
 function postWeatherData(req, res) {
   const data = req.body;
-  console.log(data);
   const newEntry = {
     id: projectData.length + 1,
     zipCode: data.zipCode,
     countryCode: data.countryCode,
     feelings: data.feelings,
+    city: data.city,
     date: data.date,
     weather: data.weather,
   };
 
   projectData.push(newEntry);
-
-  console.log(projectData);
 
   return res.send(JSON.stringify(newEntry));
 }
