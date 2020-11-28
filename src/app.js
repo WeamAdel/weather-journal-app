@@ -1,3 +1,16 @@
+/* Global variables */
+const historyList = document.getElementById("history-list");
+
+//Get project data on page load
+(async function getWeatherHistory() {
+  const weatherHistory = await fetch("/weather-history")
+    .then((res) => res.json())
+    .then((data) => {
+      for (let entry of data) updateUI({ entry, isNew: false });
+    })
+    .catch((error) => console.log(error));
+})();
+
 //Handle weather form submit
 const weatherForm = document.getElementById("weather-form");
 const countryCodeInput = document.getElementById("country-code");
@@ -92,7 +105,7 @@ async function postDataToServer(data) {
       return res.json();
     })
     .then((data) => {
-      return updateUI(data);
+      return updateUI({ entry: data });
     })
     .catch((error) => console.log(error));
 }
@@ -120,9 +133,8 @@ function toggleErrorMessage({ code = "", message = "" }) {
 }
 
 /* UI Functions */
-const historyList = document.getElementById("history-list");
-async function updateUI(newEntry) {
-  const weatherCardElem = await createWeatherCardElem(newEntry);
+async function updateUI({ entry, isNew = true }) {
+  const weatherCardElem = await createWeatherCardElem({ ...entry, isNew });
 
   //Remove the element indicatinc that there is no history yet
   removeEmptyHistoryIndicator();
@@ -130,8 +142,11 @@ async function updateUI(newEntry) {
   //Add the new card to the history list
   historyList.innerHTML = weatherCardElem + historyList.innerHTML;
 
-  //Remove newly added card styles
-  setTimeout(removeNewCardHighlight.bind(this, newEntry.zipCode), 1000);
+  //If the card is newly added and not loaded from the node server
+  if (isNew) {
+    //Remove newly added card styles
+    setTimeout(removeNewCardHighlight.bind(this, entry.zipCode), 1000);
+  }
 
   //Reset form
   resetFormValues();
@@ -151,8 +166,11 @@ function createWeatherCardElem({
   feeling,
   date,
   weather,
+  isNew,
 }) {
-  const template = `<li class="new" id="history-card-${zipCode}">
+  const template = `<li class=${
+    isNew ? "new" : ""
+  } id="history-card-${zipCode}">
     <div class="main-info">
       <i class="fas fa-cloud-rain"></i>
       <div class="wrapper">

@@ -27,9 +27,11 @@ function listening() {
 const projectData = [];
 
 //Get project data
-app.get("weather-history", getWeatherHistory);
+app.get("/weather-history", getWeatherHistory);
 
-function getWeatherHistory(req, res) {}
+function getWeatherHistory(req, res) {
+  return res.send(projectData);
+}
 
 //Post route to add new weather entry to the project data
 app.post("/add-weather", postWeatherData);
