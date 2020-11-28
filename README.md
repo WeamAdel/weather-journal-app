@@ -2,9 +2,9 @@
 
 ## Contents
 
-1. [Overview](overview)
-1. [Filest Structure](files-structure)
-1. [Instructions](instructions)
+1. [Overview](#overview)
+1. [Files Structure](#files-structure)
+1. [Instructions](#instructions)
 
 ## Overview
 
@@ -12,12 +12,12 @@ An asynchronous web app that uses a Web API called [openWeathrMap](https://openw
 
 ## Files Structure
 
-1. **server.js**: where you can find all of my server side logic using _node.js_.
-1. **src**: The client side website with all styles and scripts, there is no need to separate _.css_ and _.js_ files into separate files and assets as the project is small.
-   1. index.html
-   1. app.js
-   1. style.css
-1. README.md
+- **server.js**: where you can find all of my server side logic using _node.js_.
+- **src**: The client side website with all styles and scripts, there is no need to separate _.css_ and _.js_ files into separate files and assets as the project is small.
+  - index.html
+  - app.js
+  - style.css
+- README.md
 
 ## Instructions
 
