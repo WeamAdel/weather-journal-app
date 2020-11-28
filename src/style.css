@@ -240,7 +240,7 @@ h4 {
 .weather-history li {
   position: relative;
   border-radius: 16px;
-  padding: 16px 32px;
+  padding: 16px 24px;
   font-size: 14px;
   min-height: 100px;
   max-width: 500px;
@@ -334,6 +334,11 @@ h4 {
   background-color: transparent;
   padding: 0;
   border: none;
+  transition: opacity 0.25s ease-in-out;
+}
+
+.weather-history .feelings-btn:hover {
+  opacity: 0.8;
 }
 
 .feelings {
