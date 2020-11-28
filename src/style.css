@@ -127,13 +127,15 @@ main {
   top: 16px;
   min-height: 60px;
   min-width: 300px;
-  left: -50%;
+  right: 0;
   background-color: #f24f4a;
   color: white;
   padding: 16px 32px;
-  transform: translateX(-50%);
   border-radius: 16px;
   font-size: 14px;
+  transition: all 0.3s ease-in-out;
+  opacity: 0.1;
+  transform: translateX(100%);
 }
 
 .error-message i {
@@ -155,7 +157,9 @@ h4 {
 }
 
 .error-message.visible {
-  left: 50%;
+  right: 50%;
+  transform: translateX(50%);
+  opacity: 1;
 }
 
 /* Modules */
@@ -200,6 +204,26 @@ h4 {
 /* End Weather Form */
 
 /* Start Weather History */
+.empty-history {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.empty-history p {
+  color: rgba(255, 255, 255, 0.4);
+  margin: 24px 0;
+}
+
+.weather-history {
+  background: radial-gradient(hsl(226 74% 6% / 1), transparent);
+  padding: 48px 32px;
+}
+
+.weather-history h2 {
+  text-align: center;
+  margin-bottom: 44px;
+}
+
 .weather-history ul {
   list-style: none;
   padding: 0;
@@ -229,7 +253,7 @@ h4 {
 }
 
 .weather-history .main-info .temp {
-  font-size: 36px;
+  font-size: 32px;
   color: white;
 }
 
@@ -239,7 +263,7 @@ h4 {
 
 .weather-history .main-info i {
   color: var(--yellow-700);
-  font-size: 36px;
+  font-size: 32px;
   margin-right: 12px;
 }
 

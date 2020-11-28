@@ -12,6 +12,7 @@ function handleWeatherFormSubmit(e) {
   const formValues = getFormValues();
   //fetch weather data by zip code
   fetchWeatherData(formValues);
+  //disable submit button until data submittion
   setSubmitBtnStatus(true);
 }
 
@@ -20,18 +21,6 @@ function setSubmitBtnStatus(status) {
   status
     ? submitBtn.setAttribute("disabled", true)
     : submitBtn.removeAttribute("disabled");
-}
-
-const errorMessage = document.getElementById("error-message");
-const errCode = errorMessage.querySelector("code");
-const errMessage = errorMessage.querySelector("message");
-
-function toggleErrorMessage({ code = null, message = null }) {
-  errorMessage.classList.toggle("visible");
-  if (code) {
-    errCode.innerText = code;
-    errMessage.innerHTML = message;
-  }
 }
 
 //Get form values on submit
@@ -56,7 +45,7 @@ function fetchWeatherData({ zipCode = 94040, countryCode = "us", ...rest }) {
       return res.json();
     })
     .then((data) => {
-      const failed = data.cod ? true : false;
+      const failed = data.message ? true : false;
       if (!failed) {
         const newEntryData = {
           zipCode,
@@ -74,7 +63,14 @@ function fetchWeatherData({ zipCode = 94040, countryCode = "us", ...rest }) {
         };
         postDataToServer(newEntryData);
       } else {
+        //show error message
         toggleErrorMessage({ code: data.cod, message: data.message });
+        //hide error message after 3s
+        setTimeout(
+          toggleErrorMessage.bind(this, { code: "", message: "" }),
+          3000
+        );
+        setSubmitBtnStatus(false);
       }
     })
     .catch((error) => {
@@ -107,14 +103,40 @@ function getPostDate() {
   return d.getMonth() + "." + d.getDate() + "." + d.getFullYear();
 }
 
+/* Toggle error message of form submit */
+const errorMessage = document.getElementById("error-message");
+const errCode = errorMessage.querySelector("#error-message .code");
+const errMessage = errorMessage.querySelector("#error-message .messag-content");
+
+function toggleErrorMessage({ code = "", message = "" }) {
+  if (code) {
+    errorMessage.classList.add("visible");
+  } else {
+    errorMessage.classList.remove("visible");
+  }
+
+  errCode.innerText = code;
+  errMessage.innerHTML = message;
+}
+
 /* UI Functions */
 const historyList = document.getElementById("history-list");
 async function updateUI(newEntry) {
   const weatherCardElem = await createWeatherCardElem(newEntry);
+
+  //Remove the element indicatinc that there is no history yet
+  removeEmptyHistoryIndicator();
+
+  //Add the new card to the history list
   historyList.innerHTML = weatherCardElem + historyList.innerHTML;
+
   //Remove newly added card styles
   setTimeout(removeNewCardHighlight.bind(this, newEntry.zipCode), 1000);
+
+  //Reset form
   resetFormValues();
+
+  //Change submit button status to NOT disabled
   setSubmitBtnStatus(false);
 }
 
@@ -155,14 +177,21 @@ function createWeatherCardElem({
 //New added card is highlited in yellow for 1s then it takes the normal syles
 function removeNewCardHighlight(zipCode) {
   const card = document.getElementById("history-card-" + zipCode);
-  console.log(card);
   card.classList.remove("new");
 }
 
+//Reset form inputs after submission
 function resetFormValues() {
   countryCodeInput.value = "";
   zipCodeInput.value = "";
   feelingInput.value = "";
+}
+
+//Remove empty-history element if the user has added weather readings
+const emptyHistory = document.querySelector(".empty-history");
+
+function removeEmptyHistoryIndicator() {
+  if (emptyHistory) emptyHistory.remove();
 }
 
 //Takes 1.15s to update the UI

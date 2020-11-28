@@ -10,6 +10,7 @@ const app = express();
 //Here we are configuring express to use body-parser as middle-ware.
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cors());
 
 // Initialize the main project folder
 app.use(express.static("src"));
@@ -24,6 +25,11 @@ function listening() {
 
 // Setup empty JS object to act as endpoint for all routes
 const projectData = [];
+
+//Get project data
+app.get("weather-history", getWeatherHistory);
+
+function getWeatherHistory(req, res) {}
 
 //Post route to add new weather entry to the project data
 app.post("/add-weather", postWeatherData);
