@@ -30,19 +30,13 @@ const submitBtn = document.getElementById("generate");
 submitBtn.addEventListener("click", handleWeatherFormSubmit);
 
 function handleWeatherFormSubmit(e) {
-  e.preventDefault(); //prevent default form behaviour
+  //prevent default form behaviour
+  e.preventDefault();
   const formValues = getFormValues();
   //fetch weather data by zip code
   fetchWeatherData(formValues);
   //disable submit button until data submittion
   setSubmitBtnStatus(true);
-}
-
-//In case of data is being submitted disable the submit button to prevent further for submittions
-function setSubmitBtnStatus(status) {
-  status
-    ? submitBtn.setAttribute("disabled", true)
-    : submitBtn.removeAttribute("disabled");
 }
 
 //Get form values on submit
@@ -55,11 +49,17 @@ function getFormValues() {
   };
 }
 
+//In case of data is being submitted disable the submit button to prevent further for submittions
+function setSubmitBtnStatus(status) {
+  status
+    ? submitBtn.setAttribute("disabled", true)
+    : submitBtn.removeAttribute("disabled");
+}
+
 //Fetch weather data using https://openweathermap.org/ API
 const APIKey = "91944400789044254ef1db1e5cdcd17d";
-const APIEndPoint = "";
 
-function fetchWeatherData({ zipCode = 94040, countryCode = "us", ...rest }) {
+function fetchWeatherData({ zipCode = 90001, countryCode = "us", ...rest }) {
   fetch(
     `https://api.openweathermap.org/data/2.5/weather?zip=${zipCode},${countryCode}&units=metric&appid=${APIKey}`
   )
@@ -89,12 +89,19 @@ function fetchWeatherData({ zipCode = 94040, countryCode = "us", ...rest }) {
       } else {
         //show error message
         toggleErrorMessage({ code: data.cod, message: data.message });
+        //Change submit button status to NOT disabled
         setSubmitBtnStatus(false);
       }
     })
     .catch((error) => {
       console.log(error);
     });
+}
+
+// Create a new date instance dynamically with JS
+function getPostDate() {
+  const d = new Date();
+  return d.getMonth() + "." + d.getDate() + "." + d.getFullYear();
 }
 
 //Post data to the node server
@@ -124,12 +131,6 @@ async function postDataToServer(data) {
     .catch((error) => console.log(error));
 }
 
-// Create a new date instance dynamically with JS
-function getPostDate() {
-  const d = new Date();
-  return d.getMonth() + "." + d.getDate() + "." + d.getFullYear();
-}
-
 /* Toggle error message of form submit */
 const errorMessage = document.getElementById("error-message");
 const errCode = errorMessage.querySelector("#error-message .code");
@@ -151,7 +152,7 @@ function toggleErrorMessage({ code, message }) {
 async function updateUI({ entry, isNew = true }) {
   const weatherCardElem = await createWeatherCardElem({ ...entry, isNew });
 
-  //Remove the element indicatinc that there is no history yet
+  //Remove the element indicating that there is no history yet
   removeEmptyHistoryIndicator();
 
   //Add the new card to the history list
@@ -190,11 +191,12 @@ function removeEmptyHistoryIndicator() {
   if (emptyHistory) emptyHistory.remove();
 }
 
-//Toggle feelings visibility on emoji cick
+//Toggle feelings visibility on emoji click
 historyList.addEventListener("click", toggleFeelingsVisibility);
 
 function toggleFeelingsVisibility(e) {
   const target = e.target;
+
   if (target.classList.contains("feelings-btn")) {
     const cardId = target.dataset.card;
     const targetFeelingsElem = document.querySelector(
