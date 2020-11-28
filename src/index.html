@@ -41,7 +41,7 @@
               <textarea value="Great Acually" id="feeling" class="input" name="feeling" required>Great Acually</textarea>
             </div>
 
-            <button type="submit" class="secondary-btn">Save</button>
+            <button id="submit-btn" type="submit" class="secondary-btn">Save</button>
             <div class="clear-fix"></div>
           </form>
         </section>
@@ -50,30 +50,18 @@
         <!-- Start Weather History -->
         <section class="weather-history">
           <h2>Your History</h2>
-          <ul class="history-list" id="history-list">
-            <li>
-              <div class="main-info">
-                <i class="fas fa-cloud-rain "></i>
-                <div class="wrapper">
-                  <p class="temp">
-                    <span>12<sup>°</sup></span>
-                  </p>
-                  <p class="description">Rainy weather</p>
-                </div>
-              </div>
-              <div class="extra-info">
-                <h3 class="country">Cairo, EG</h3>
-                <time datetime="12.10.2020">12.10.2020</time>
-                <p class="min-max">
-                  <span>min: 10<sup>°</sup></span> / 
-                  <span>max: 18<sup>°</sup></span></p>
-              </div>
-            </li>
-          </ul>
+          <ul class="history-list" id="history-list"></ul>
         </section>
         <!-- End Weather History -->
       </div>
     </main>
+
+    <!-- Error Message -->
+    <div id="error-message" class="error-message">
+      <i class="fas fa-bug"></i>
+      <h4 class="code"></h4>
+      <p class="messag-content"></p>
+    </div>
 
   <script src="app.js" type="text/javascript"></script>
   </body>
