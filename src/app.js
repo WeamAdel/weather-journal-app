@@ -14,9 +14,9 @@ const historyList = document.getElementById("history-list");
 //Handle weather form submit
 const weatherForm = document.getElementById("weather-form");
 const countryCodeInput = document.getElementById("country-code");
-const zipCodeInput = document.getElementById("zip-code");
-const feelingInput = document.getElementById("feeling");
-const submitBtn = document.getElementById("submit-btn");
+const zipCodeInput = document.getElementById("zip");
+const feelingsInput = document.getElementById("feelings");
+const submitBtn = document.getElementById("generate");
 
 weatherForm.addEventListener("submit", handleWeatherFormSubmit);
 
@@ -41,7 +41,7 @@ function getFormValues() {
   return {
     countryCode: countryCodeInput.value.trim(),
     zipCode: zipCodeInput.value.trim(),
-    feeling: feelingInput.value.trim(),
+    feelings: feelingsInput.value.trim(),
     date: getPostDate(),
   };
 }
@@ -63,7 +63,7 @@ function fetchWeatherData({ zipCode = 94040, countryCode = "us", ...rest }) {
         const newEntryData = {
           zipCode,
           countryCode,
-          feeling: rest.feeling,
+          feelings: rest.feelings,
           date: rest.date,
           weather: {
             temp: data.main.temp,
@@ -145,7 +145,7 @@ async function updateUI({ entry, isNew = true }) {
   //If the card is newly added and not loaded from the node server
   if (isNew) {
     //Remove newly added card styles
-    setTimeout(removeNewCardHighlight.bind(this, entry.zipCode), 1000);
+    setTimeout(removeNewCardHighlight.bind(this, entry.id), 1000);
   }
 
   //Reset form
@@ -161,40 +161,42 @@ async function updateUI({ entry, isNew = true }) {
 //The second method is commented bellow in case it's required to use it
 
 function createWeatherCardElem({
-  zipCode,
+  id,
   countryCode,
-  feeling,
+  feelings,
   date,
   weather,
   isNew,
 }) {
-  const template = `<li class=${
-    isNew ? "new" : ""
-  } id="history-card-${zipCode}">
-    <div class="main-info">
-      <i class="fas fa-cloud-rain"></i>
-      <div class="wrapper">
-        <p class="temp">
-          <span>${weather.temp}<sup>°</sup></span>
-        </p>
-        <p class="description">${weather.description}</p>
+  const template = `<li class="${isNew ? "new" : ""}" id="history-card-${id}">
+    <div class="info-wrapper"> 
+      <div class="main-info">
+        <i class="fas fa-cloud-rain"></i>
+        <div class="wrapper">
+          <p class="temp">
+            <span>${weather.temp}<sup>°</sup></span>
+          </p>
+          <p class="description">${weather.description}</p>
+        </div>
+      </div>
+      <div class="extra-info">
+        <h3 class="country">${countryCode}</h3>
+        <time datetime="${date}">${date}</time>
+        <p class="min-max">
+          <span>min: ${weather.minTemp}<sup>°</sup></span> / 
+          <span>max: ${weather.maxTemp}<sup>°</sup></span></p>
       </div>
     </div>
-    <div class="extra-info">
-      <h3 class="country">${countryCode}</h3>
-      <time datetime="${date}">${date}</time>
-      <p class="min-max">
-        <span>min: ${weather.minTemp}<sup>°</sup></span> / 
-        <span>max: ${weather.maxTemp}<sup>°</sup></span></p>
-    </div>
+    <button class="feelings-btn" data-card="${id}">😊</button>
+    <p class="feelings">${feelings}</p>
   </li>`;
 
   return template;
 }
 
-//New added card is highlited in yellow for 1s then it takes the normal syles
-function removeNewCardHighlight(zipCode) {
-  const card = document.getElementById("history-card-" + zipCode);
+//New added card is highlited in yellow for 1s then it takes the normal styles
+function removeNewCardHighlight(id) {
+  const card = document.getElementById("history-card-" + id);
   card.classList.remove("new");
 }
 
@@ -202,7 +204,7 @@ function removeNewCardHighlight(zipCode) {
 function resetFormValues() {
   countryCodeInput.value = "";
   zipCodeInput.value = "";
-  feelingInput.value = "";
+  feelingsInput.value = "";
 }
 
 //Remove empty-history element if the user has added weather readings
@@ -212,11 +214,27 @@ function removeEmptyHistoryIndicator() {
   if (emptyHistory) emptyHistory.remove();
 }
 
+//Toggle feelings visibility on emoji cick
+historyList.addEventListener("click", toggleFeelingsVisibility);
+console.log(historyList);
+function toggleFeelingsVisibility(e) {
+  const target = e.target;
+  if (target.classList.contains("feelings-btn")) {
+    const cardId = target.dataset.card;
+    console.log(cardId);
+    const targetFeelingsElem = document.querySelector(
+      `#history-card-${cardId} .feelings`
+    );
+    console.log(targetFeelingsElem);
+    targetFeelingsElem.classList.toggle("visible");
+  }
+}
+
 //Takes 1.15s to update the UI
 // function createWeatherCardElem({
-//  zipCode,
+//  id,
 //   countryCode,
-//   feeling,
+//   feelings,
 //   date,
 //   weather,
 // }) {

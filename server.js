@@ -40,9 +40,10 @@ function postWeatherData(req, res) {
   const data = req.body;
   console.log(data);
   const newEntry = {
+    id: projectData.length + 1,
     zipCode: data.zipCode,
     countryCode: data.countryCode,
-    feeling: data.feeling,
+    feelings: data.feelings,
     date: data.date,
     weather: data.weather,
   };

@@ -229,10 +229,9 @@ h4 {
   padding: 0;
 }
 .weather-history li {
-  display: flex;
+  position: relative;
   border-radius: 16px;
   padding: 16px 32px;
-  align-items: center;
   font-size: 14px;
   min-height: 100px;
   max-width: 500px;
@@ -243,6 +242,11 @@ h4 {
 
 .weather-history li.new {
   background-color: var(--yellow-900);
+}
+
+.weather-history .info-wrapper {
+  display: flex;
+  align-items: center;
 }
 
 .weather-history .main-info {
@@ -310,6 +314,32 @@ h4 {
 
 .weather-history .extra-info .min-max {
   margin-top: auto;
+}
+
+.weather-history .feelings-btn {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  cursor: pointer;
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
+  background-color: transparent;
+  padding: 0;
+  border: none;
+}
+
+.feelings {
+  padding: 12px 0 0;
+  margin-top: 16px;
+  border-top: 1px solid var(--yellow-700);
+  display: none;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  word-break: break-word;
+}
+
+.feelings.visible {
+  display: block;
+  opacity: 1;
 }
 
 /* End Weather History */
