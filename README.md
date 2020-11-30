@@ -5,6 +5,7 @@
 1. [Overview](#overview)
 1. [Files Structure](#files-structure)
 1. [Instructions](#instructions)
+1. [GIF](#gif)
 
 ## Overview
 
@@ -25,3 +26,7 @@ An asynchronous web app that uses a Web API called [openWeathrMap](https://openw
 - An error message shows with **404** status code if the entered _zip code_ or _country code_ is not valid by the [API](https://openweathermap.org/).
 - The default location data is set to _Los Angeles, US_ with **zip code: 90001** and **country code: us**.
 - Clicking the _😊_ in each entry card will show the user's entered feelings, as it may be too long, there is no need to show it all the time.
+
+## GIF
+
+![Working App](weather.gif)

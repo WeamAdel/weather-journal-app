@@ -7,7 +7,6 @@ const historyList = document.getElementById("history-list");
     .then((res) => {
       //Request success
       if (res.ok) return res.json();
-
       //Request failed
       return { failed: true, code: res.status, message: res.statusText };
     })
@@ -278,12 +277,12 @@ function createWeatherCardElem({
   time.innerText = date;
   minTemp.innerText = "min: " + weather.minTemp + " / ";
   maxTemp.innerText = "max: " + weather.maxTemp;
-  minMaxTemp.appendChild(minMaxTemp);
+
   minMaxTemp.appendChild(minTemp);
   minMaxTemp.appendChild(maxTemp);
-  extraInfo.append(country);
-  extraInfo.append(time);
-  extraInfo.append(minMaxTemp);
+  extraInfo.appendChild(country);
+  extraInfo.appendChild(time);
+  extraInfo.appendChild(minMaxTemp);
 
   //Feelings
   toggleFeelingsBtn.innerText = "😊";
