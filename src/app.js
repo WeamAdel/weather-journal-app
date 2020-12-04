@@ -100,7 +100,7 @@ function fetchWeatherData({ zipCode = 90001, countryCode = "us", ...rest }) {
 // Create a new date instance dynamically with JS
 function getPostDate() {
   const d = new Date();
-  return d.getMonth() + "." + d.getDate() + "." + d.getFullYear();
+  return d.getMonth() + 1 + "." + d.getDate() + "." + d.getFullYear();
 }
 
 //Post data to the node server
@@ -124,10 +124,26 @@ async function postDataToServer(data) {
       if (data.failed) {
         toggleErrorMessage({ code: data.code, message: data.message });
       } else {
-        return updateUI({ entry: data });
+        return getWeatherReading(data.id);
       }
     })
+    .then((res) => {
+      return res.json();
+    })
+    .then((data) => {
+      return updateUI({ entry: data });
+    })
     .catch((error) => console.log(error));
+}
+
+async function getWeatherReading(id) {
+  return await fetch(`weather-reading/${id}`)
+    .then((res) => {
+      return res;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 }
 
 /* Toggle error message of form submit */
@@ -258,7 +274,7 @@ function createWeatherCardElem({
   //Feelings
   toggleFeelingsBtn.setAttribute("class", "feelings-btn");
   toggleFeelingsBtn.setAttribute("data-card", id);
-  feelingsElem.setAttribute("class", "feelings");
+  feelingsElem.setAttribute("class", "feelings visible");
 
   //Set elements values
   //Main info
