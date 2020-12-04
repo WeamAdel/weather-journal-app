@@ -14,7 +14,7 @@ const historyList = document.getElementById("history-list");
       if (data.failed) {
         toggleErrorMessage({ code: data.code, message: data.message });
       } else {
-        for (let entry of data) updateUI({ entry, isNew: false });
+        updateUI({ history: data });
       }
     })
     .catch((error) => console.log(error));
@@ -164,26 +164,34 @@ function toggleErrorMessage({ code, message }) {
 }
 
 /* UI Functions */
-async function updateUI({ entry, isNew = true }) {
-  const weatherCardElem = await createWeatherCardElem({ ...entry, isNew });
+async function updateUI({ entry, history }) {
+  if (entry) {
+    const weatherCardElem = await createWeatherCardElem({
+      ...entry,
+      isNew: true,
+    });
+    //Add the new card to the history list
+    historyList.prepend(weatherCardElem);
 
-  //Remove the element indicating that there is no history yet
-  removeEmptyHistoryIndicator();
-
-  //Add the new card to the history list
-  historyList.prepend(weatherCardElem);
-
-  //If the card is newly added and not loaded from the node server
-  if (isNew) {
     //Remove newly added card styles
     setTimeout(removeNewCardHighlight.bind(this, entry.id), 1000);
+
+    //Reset form
+    resetFormValues();
+
+    //Change submit button status to NOT disabled
+    setSubmitBtnStatus(false);
   }
 
-  //Reset form
-  resetFormValues();
+  if (history) {
+    const weatherHistory = await createHistoryHTML(history);
+    historyList.appendChild(weatherHistory);
+  }
 
-  //Change submit button status to NOT disabled
-  setSubmitBtnStatus(false);
+  //Remove the element indicating that there is no history yet
+  if ((history && history.length) || entry) {
+    removeEmptyHistoryIndicator();
+  }
 }
 
 //New added card is highlited in yellow for 1s then it takes the normal styles
@@ -220,6 +228,15 @@ function toggleFeelingsVisibility(e) {
 
     targetFeelingsElem.classList.toggle("visible");
   }
+}
+
+function createHistoryHTML(history) {
+  const fragment = document.createDocumentFragment();
+  for (let entry of history) {
+    const card = createWeatherCardElem(entry);
+    fragment.prepend(card);
+  }
+  return fragment;
 }
 
 //Create a card markup template
